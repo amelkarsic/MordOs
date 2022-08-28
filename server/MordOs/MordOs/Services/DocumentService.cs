@@ -8,6 +8,7 @@ namespace MordOs.Services
     {
         Task CreateFileAsync(DocDto doc, CancellationToken cancellationToken);
         Task<List<DocDto>> GetDocuments(bool isSortedAsc, CancellationToken cancellationToken);
+        Task EditDocument(DocDto newDoc, CancellationToken cancellationToken);
     }
     public class DocumentService : IDocumentService
     {
@@ -36,6 +37,21 @@ namespace MordOs.Services
                 .ToListAsync(cancellationToken);
 
             return isSortedAsc ? documents : documents.OrderByDescending(x => x.Title).ToList();
+        }
+
+        public async Task EditDocument(DocDto newDoc, CancellationToken cancellationToken)
+        {
+            var document = await _mordDbContext.Documents.FirstOrDefaultAsync(x => x.Id == newDoc.Id);
+
+            if (document == null)
+            {
+                throw new ArgumentException("Document not found!");
+            }
+
+            document.Text = newDoc.Text;
+            document.Title = newDoc.Title;
+
+            await _mordDbContext.SaveChangesAsync(cancellationToken);
         }
     }
 
