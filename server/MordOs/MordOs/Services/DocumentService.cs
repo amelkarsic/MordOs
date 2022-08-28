@@ -7,7 +7,7 @@ namespace MordOs.Services
     public interface IDocumentService
     {
         Task CreateFileAsync(DocDto doc, CancellationToken cancellationToken);
-        Task<List<DocDto>> GetDocuments(CancellationToken cancellationToken);
+        Task<List<DocDto>> GetDocuments(bool isSortedAsc, CancellationToken cancellationToken);
     }
     public class DocumentService : IDocumentService
     {
@@ -28,13 +28,14 @@ namespace MordOs.Services
             await _mordDbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<List<DocDto>> GetDocuments(CancellationToken cancellationToken)
+        public async Task<List<DocDto>> GetDocuments(bool isSortedAsc, CancellationToken cancellationToken)
         {
             var documents = await _mordDbContext.Documents
                 .Select(x => new DocDto { Id = x.Id, Text = x.Text, Title = x.Title })
+                .OrderBy(x => x.Title)
                 .ToListAsync(cancellationToken);
 
-            return documents;
+            return isSortedAsc ? documents : documents.OrderByDescending(x => x.Title).ToList();
         }
     }
 

@@ -7,25 +7,34 @@ import { Button } from "../../shared/Button";
 export const Documents = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [documents, setDocuments] = useState(null);
+  const [isSortedAsc, setIsSortedAsc] = useState(true);
+
+  //would add pagination, but this is just a POC
+  async function getDocuments() {
+    try {
+      setIsLoading(true);
+      const { data } = await getDocumentsFromApi(isSortedAsc);
+
+      setDocuments(data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   useEffect(() => {
-    //would add pagination, but this is just a POC
-
-    async function getDocuments() {
-      try {
-        setIsLoading(true);
-        const { data } = await getDocumentsFromApi();
-
-        setDocuments(data);
-      } catch (err) {
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
     getDocuments();
   }, []);
-  console.log(isLoading);
+
+  useEffect(() => {
+    getDocuments();
+  }, [isSortedAsc]);
+
+  const changeSorting = () => {
+    setIsSortedAsc(!isSortedAsc);
+  };
+
   const renderer = () => {
     if (isLoading) {
       return <Loader height="50px" width="50px" />;
@@ -33,18 +42,28 @@ export const Documents = () => {
 
     if (documents?.length > 0) {
       return (
-        <Container>
-          <h3>Document Title</h3>
-          {documents.map((doc) => {
+        <Table>
+          <tr>
+            <th>
+              Title{" "}
+              <button onClick={changeSorting}>
+                Sort {isSortedAsc ? "descending" : "ascending"}
+              </button>
+            </th>
+            <th>Actions</th>
+          </tr>
+          {documents.map((doc, index) => {
             return (
-              <File>
-                <b>{doc.title}</b>
-                <Button>EDIT</Button>
-                <Button backgroundColor="red">DELETE</Button>
-              </File>
+              <tr key={index}>
+                <td>{doc.title}</td>
+                <td>
+                  <Button>VIEW / EDIT</Button>
+                  <Button backgroundColor="red">DELETE</Button>
+                </td>
+              </tr>
             );
           })}
-        </Container>
+        </Table>
       );
     }
 
@@ -54,21 +73,17 @@ export const Documents = () => {
   return renderer();
 };
 
-const File = styled.div`
-  border: 1px solid grey;
-  height: 5vh;
-  width: 50vh;
-  display: flex;
-  align-items: center;
-
-  * {
-    width: 20vh;
-    margin-left: 5vh;
+const Table = styled.table`
+  width: 60vh;
+  border: 1px solid black;
+  th,
+  td {
+    border: 1px solid black;
   }
-`;
 
-const Container = styled.div`
-  div {
-    margin-bottom: 10px;
+  td:last-child {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-evenly;
   }
 `;

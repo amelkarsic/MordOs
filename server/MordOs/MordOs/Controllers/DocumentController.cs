@@ -29,11 +29,11 @@ namespace MordOs.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetDocuments(CancellationToken cancellationToken)
+        public async Task<ActionResult> GetDocuments([FromQuery] bool isSortedAsc,CancellationToken cancellationToken)
         {
             try
             {
-                var documents = await _documentService.GetDocuments( cancellationToken);
+                var documents = await _documentService.GetDocuments(isSortedAsc, cancellationToken);
 
                 return Ok(documents);
             }
