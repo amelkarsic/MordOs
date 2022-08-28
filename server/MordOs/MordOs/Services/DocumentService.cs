@@ -8,7 +8,7 @@ namespace MordOs.Services
     public interface IDocumentService
     {
         Task CreateFileAsync(DocDto doc, CancellationToken cancellationToken);
-        Task<List<DocDto>> GetDocumentsAsync(bool isSortedAsc, CancellationToken cancellationToken);
+        Task<List<DocDto>> GetDocumentsAsync(bool isSortedAsc, int directory, CancellationToken cancellationToken);
         Task EditDocumentAsync(DocDto newDoc, CancellationToken cancellationToken);
         Task DeleteDocumentAsync(int id, CancellationToken cancellationToken);
     }
@@ -26,16 +26,17 @@ namespace MordOs.Services
             {
                 Text = doc.Text,
                 Title = doc.Title,
-                Directory = doc.Directory
+                Directory = (DirectoryEnum)doc.Directory
             });
 
             await _mordDbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<List<DocDto>> GetDocumentsAsync(bool isSortedAsc, CancellationToken cancellationToken)
+        public async Task<List<DocDto>> GetDocumentsAsync(bool isSortedAsc, int directory, CancellationToken cancellationToken)
         {
             var documents = await _mordDbContext.Documents
-                .Select(x => new DocDto { Id = x.Id, Text = x.Text, Title = x.Title, Directory = x.Directory })
+                .Select(x => new DocDto { Id = x.Id, Text = x.Text, Title = x.Title, Directory = (int)x.Directory })
+                .Where(x => x.Directory == directory)
                 .OrderBy(x => x.Title)
                 .ToListAsync(cancellationToken);
 
@@ -53,7 +54,7 @@ namespace MordOs.Services
 
             document.Text = newDoc.Text;
             document.Title = newDoc.Title;
-            document.Directory = newDoc.Directory;
+            document.Directory = (DirectoryEnum)newDoc.Directory;
             await _mordDbContext.SaveChangesAsync(cancellationToken);
         }
 
@@ -76,6 +77,6 @@ namespace MordOs.Services
         public int Id { get; set; }
         public string Text { get; set; }
         public string Title { get; set; }
-        public DirectoryEnum Directory { get;  set; }
+        public int Directory { get;  set; }
     }
 }
