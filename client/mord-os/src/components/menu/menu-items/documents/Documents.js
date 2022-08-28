@@ -36,11 +36,11 @@ export const Documents = () => {
 
   useEffect(() => {
     getDocuments();
-  }, []);
+  }, [getDocuments]);
 
   useEffect(() => {
     getDocuments();
-  }, [isSortedAsc, managedDocument, currentDirectory]);
+  }, [isSortedAsc, managedDocument, currentDirectory, getDocuments]);
 
   const changeSorting = () => {
     setIsSortedAsc(!isSortedAsc);

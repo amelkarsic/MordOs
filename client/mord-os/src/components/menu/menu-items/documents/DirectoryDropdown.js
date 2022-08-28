@@ -28,7 +28,11 @@ export const DirectoryDropdown = ({
         defaultValue={defaultValue}
       >
         {DIRECTORIES.map((dir) => {
-          return <option value={dir.key}>{dir.value}</option>;
+          return (
+            <option value={dir.key} key={dir.key}>
+              {dir.value}
+            </option>
+          );
         })}
       </Dropdown>
     </>
