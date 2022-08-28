@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MordOs.Enums;
 using MordOs.Infrastucture;
 using MordOs.Infrastucture.Entities;
 
@@ -25,6 +26,7 @@ namespace MordOs.Services
             {
                 Text = doc.Text,
                 Title = doc.Title,
+                Directory = doc.Directory
             });
 
             await _mordDbContext.SaveChangesAsync(cancellationToken);
@@ -33,7 +35,7 @@ namespace MordOs.Services
         public async Task<List<DocDto>> GetDocumentsAsync(bool isSortedAsc, CancellationToken cancellationToken)
         {
             var documents = await _mordDbContext.Documents
-                .Select(x => new DocDto { Id = x.Id, Text = x.Text, Title = x.Title })
+                .Select(x => new DocDto { Id = x.Id, Text = x.Text, Title = x.Title, Directory = x.Directory })
                 .OrderBy(x => x.Title)
                 .ToListAsync(cancellationToken);
 
@@ -51,7 +53,7 @@ namespace MordOs.Services
 
             document.Text = newDoc.Text;
             document.Title = newDoc.Title;
-
+            document.Directory = newDoc.Directory;
             await _mordDbContext.SaveChangesAsync(cancellationToken);
         }
 
@@ -74,5 +76,6 @@ namespace MordOs.Services
         public int Id { get; set; }
         public string Text { get; set; }
         public string Title { get; set; }
+        public DirectoryEnum Directory { get;  set; }
     }
 }

@@ -44,11 +44,26 @@ namespace MordOs.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> GetDocuments([FromBody] DocDto newDoc, CancellationToken cancellationToken)
+        public async Task<ActionResult> EditDocuments([FromBody] DocDto newDoc, CancellationToken cancellationToken)
         {
             try
             {
                 await _documentService.EditDocumentAsync(newDoc, cancellationToken);
+
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteDocument([FromRoute] int id, CancellationToken cancellationToken)
+        {
+            try
+            {
+                await _documentService.DeleteDocumentAsync(id, cancellationToken);
 
                 return Ok();
             }
