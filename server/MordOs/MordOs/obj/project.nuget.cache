@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Y2cmfwbOCi1KldAudFWI75hY3Jj/p4+3WBCpCHORu6q1icH3IoPvZTuPbITyhjtv/0x+0QYic6UWuWfm4lB2gw==",
+  "dgSpecHash": "owrP5JnDA6etR8NrpoDEFoDxfUhjzq+k0O1G6dOoxRNSMoE8lD7ZrIMTjNkkghQrOOrWhN/8U5SkIiRLK+VVdw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Korisnik\\source\\repos\\MordOSS\\server\\MordOs\\MordOs\\MordOs.csproj",
+  "projectFilePath": "C:\\Users\\Korisnik\\source\\repos\\Task\\server\\MordOs\\MordOs\\MordOs.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Korisnik\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\Korisnik\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Korisnik\\source\\repos\\MordOSS\\server\\MordOs\\MordOs\\MordOs.csproj": {}
+    "C:\\Users\\Korisnik\\source\\repos\\Task\\server\\MordOs\\MordOs\\MordOs.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Korisnik\\source\\repos\\MordOSS\\server\\MordOs\\MordOs\\MordOs.csproj": {
+    "C:\\Users\\Korisnik\\source\\repos\\Task\\server\\MordOs\\MordOs\\MordOs.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Korisnik\\source\\repos\\MordOSS\\server\\MordOs\\MordOs\\MordOs.csproj",
+        "projectUniqueName": "C:\\Users\\Korisnik\\source\\repos\\Task\\server\\MordOs\\MordOs\\MordOs.csproj",
         "projectName": "MordOs",
-        "projectPath": "C:\\Users\\Korisnik\\source\\repos\\MordOSS\\server\\MordOs\\MordOs\\MordOs.csproj",
+        "projectPath": "C:\\Users\\Korisnik\\source\\repos\\Task\\server\\MordOs\\MordOs\\MordOs.csproj",
         "packagesPath": "C:\\Users\\Korisnik\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Korisnik\\source\\repos\\MordOSS\\server\\MordOs\\MordOs\\obj\\",
+        "outputPath": "C:\\Users\\Korisnik\\source\\repos\\Task\\server\\MordOs\\MordOs\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Korisnik\\AppData\\Roaming\\NuGet\\NuGet.Config",
