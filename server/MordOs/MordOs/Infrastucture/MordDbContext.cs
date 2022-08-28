@@ -20,6 +20,18 @@ namespace MordOs.Infrastucture
         {
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>().HasData(
+                new User
+                {
+                    Id = 1,
+                    Password = "A3TXZ+xzX61bICKFP4faxCh9lg6MYS0sAcOLHy+4RlI=",
+                    Email = "borgoth@mordos.com"
+                }
+            );
+        }
+
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             return base.SaveChangesAsync(cancellationToken);

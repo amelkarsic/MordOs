@@ -5,7 +5,7 @@ using MordOs.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDbContext<IMordDbContext, MordDbContext>(opts => opts.UseNpgsql("Server=localhost;Database=MordOs;Username=postgres;Password=postgres"));
+builder.Services.AddDbContext<IMordDbContext, MordDbContext>(opts => opts.UseNpgsql("Server=localhost;Database=MordOs4;Username=postgres;Password=postgres"));
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IDocumentService, DocumentService>();
 builder.Services.AddControllers();
