@@ -1,21 +1,30 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Loader } from "../../../shared/Loader";
-import { getDocuments as getDocumentsFromApi } from "../../../../services/DocumentService";
+import {
+  getDocuments as getDocumentsFromApi,
+  deleteDocument,
+} from "../../../../services/DocumentService";
 import styled from "styled-components";
 import { Button } from "../../../shared/Button";
 import { EditDocument } from "./EditDocument";
+import { DirectoryDropdown, DIRECTORY_ENUM } from "./DirectoryDropdown";
 
 export const Documents = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [isDeleting, setIsDeleting] = useState(false);
+
   const [documents, setDocuments] = useState(null);
   const [isSortedAsc, setIsSortedAsc] = useState(true);
   const [managedDocument, setManagedDocument] = useState(null);
+  const [currentDirectory, setCurrentDirectory] = useState(
+    DIRECTORY_ENUM.Desktop
+  );
 
   //would add pagination, but this is just a POC
   const getDocuments = useCallback(async () => {
     try {
       setIsLoading(true);
-      const { data } = await getDocumentsFromApi(isSortedAsc);
+      const { data } = await getDocumentsFromApi(isSortedAsc, currentDirectory);
 
       setDocuments(data);
     } catch (err) {
@@ -23,7 +32,7 @@ export const Documents = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [isSortedAsc]);
+  }, [isSortedAsc, currentDirectory]);
 
   useEffect(() => {
     getDocuments();
@@ -31,7 +40,7 @@ export const Documents = () => {
 
   useEffect(() => {
     getDocuments();
-  }, [isSortedAsc, managedDocument]);
+  }, [isSortedAsc, managedDocument, currentDirectory]);
 
   const changeSorting = () => {
     setIsSortedAsc(!isSortedAsc);
@@ -46,6 +55,22 @@ export const Documents = () => {
     );
   };
 
+  const handleDeleteDocument = async (id) => {
+    setIsDeleting(true);
+    try {
+      await deleteDocument(id);
+      await getDocuments();
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  const changeDirectory = (e) => {
+    setCurrentDirectory(e.target.value);
+  };
+
   const renderTable = () => {
     if (isLoading) {
       return <Loader height="50px" width="50px" />;
@@ -53,41 +78,70 @@ export const Documents = () => {
 
     if (documents?.length > 0) {
       return (
-        <Table>
-          <tr>
-            <th>
-              Title{" "}
-              <button onClick={changeSorting}>
-                Sort {isSortedAsc ? "descending" : "ascending"}
-              </button>
-            </th>
-            <th>Actions</th>
-          </tr>
-          {documents.map((doc) => {
-            return (
-              <tr key={doc.id}>
-                <td>{doc.title}</td>
-                <td>
-                  <Button onClick={() => setManagedDocument(doc)}>
-                    VIEW / EDIT
-                  </Button>
-                  <Button backgroundColor="red">DELETE</Button>
-                </td>
+        <>
+          <DirectoryDropdown
+            changeDirectory={changeDirectory}
+            currentDirectory={currentDirectory}
+          />
+          <Table>
+            <thead>
+              <tr>
+                <th>
+                  Title
+                  <button onClick={changeSorting}>
+                    Sort {isSortedAsc ? "descending" : "ascending"}
+                  </button>
+                </th>
+                <th>Actions</th>
               </tr>
-            );
-          })}
-        </Table>
+            </thead>
+            <tbody>
+              {documents.map((doc) => {
+                return (
+                  <tr key={doc.id}>
+                    <td>{doc.title}</td>
+                    <td>
+                      <Button
+                        onClick={() => setManagedDocument(doc)}
+                        disabled={isDeleting}
+                      >
+                        VIEW / EDIT
+                      </Button>
+                      <Button
+                        backgroundColor="red"
+                        onClick={() => handleDeleteDocument(doc.id)}
+                        disabled={isDeleting}
+                      >
+                        DELETE
+                      </Button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </Table>
+        </>
       );
     }
 
-    return <>NO DATA</>;
+    return (
+      <>
+        <div>
+          <DirectoryDropdown
+            changeDirectory={changeDirectory}
+            currentDirectory={currentDirectory}
+          />
+        </div>
+        NO DATA
+      </>
+    );
   };
 
   return managedDocument ? manageDocument() : renderTable();
 };
 
 const Table = styled.table`
-  width: 60vh;
+  width: 80vh;
   border: 1px solid black;
   th,
   td {

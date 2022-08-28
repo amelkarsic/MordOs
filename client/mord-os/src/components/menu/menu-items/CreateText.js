@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useRoot } from "../../../RootContext";
 import { createDocument } from "../../../services/DocumentService";
 import { Button } from "../../shared/Button";
+import { DirectoryDropdown } from "./documents/DirectoryDropdown";
 
 export const CreateText = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -10,11 +11,17 @@ export const CreateText = () => {
 
   const submit = async (e) => {
     e.preventDefault();
-    const { title, text } = e.target;
+
+    const { title, text, directory } = e.target;
 
     setIsSubmitting(true);
     try {
-      await createDocument({ title: title.value, text: text.value });
+      await createDocument({
+        title: title.value,
+        text: text.value,
+        directory: directory.value,
+      });
+
       closeCurrentMenuItem();
       alert("Your file is uploaded!");
     } catch (err) {
@@ -26,6 +33,7 @@ export const CreateText = () => {
 
   return (
     <Form onSubmit={submit}>
+      <DirectoryDropdown />
       <label>
         <b>Title</b>
       </label>

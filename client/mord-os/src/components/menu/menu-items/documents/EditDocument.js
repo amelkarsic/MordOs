@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { editDocument } from "../../../../services/DocumentService";
 import { Button } from "../../../shared/Button";
+import { DirectoryDropdown } from "./DirectoryDropdown";
 
 export const EditDocument = ({ document, goBack }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -10,7 +11,7 @@ export const EditDocument = ({ document, goBack }) => {
     //definitely would implement "dirty" mechanism to check if field values were changed
 
     e.preventDefault();
-    const { title, text } = e.target;
+    const { title, text, directory } = e.target;
 
     setIsSubmitting(true);
     try {
@@ -18,6 +19,7 @@ export const EditDocument = ({ document, goBack }) => {
         id: document.id,
         title: title.value,
         text: text.value,
+        directory: directory.value,
       });
 
       alert("Your file is edited succefully!");
@@ -32,7 +34,9 @@ export const EditDocument = ({ document, goBack }) => {
   return (
     <>
       <EditingTitle>Editing "{document.title}" document</EditingTitle>
+
       <Form onSubmit={submit}>
+        <DirectoryDropdown defaultValue={document.directory} />
         <label>
           <b>Title</b>
         </label>
