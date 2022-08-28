@@ -7,6 +7,7 @@ import { Button } from "../../shared/Button";
 export const CreateText = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { closeCurrentMenuItem } = useRoot();
+
   const submit = async (e) => {
     e.preventDefault();
     const { title, text } = e.target;

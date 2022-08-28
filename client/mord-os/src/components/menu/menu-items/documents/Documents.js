@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { Loader } from "../../shared/Loader";
-import { getDocuments as getDocumentsFromApi } from "../../../services/DocumentService";
+import React, { useCallback, useEffect, useState } from "react";
+import { Loader } from "../../../shared/Loader";
+import { getDocuments as getDocumentsFromApi } from "../../../../services/DocumentService";
 import styled from "styled-components";
-import { Button } from "../../shared/Button";
+import { Button } from "../../../shared/Button";
+import { EditDocument } from "./EditDocument";
 
 export const Documents = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [documents, setDocuments] = useState(null);
   const [isSortedAsc, setIsSortedAsc] = useState(true);
+  const [managedDocument, setManagedDocument] = useState(null);
 
   //would add pagination, but this is just a POC
-  async function getDocuments() {
+  const getDocuments = useCallback(async () => {
     try {
       setIsLoading(true);
       const { data } = await getDocumentsFromApi(isSortedAsc);
@@ -21,7 +23,7 @@ export const Documents = () => {
     } finally {
       setIsLoading(false);
     }
-  }
+  }, [isSortedAsc]);
 
   useEffect(() => {
     getDocuments();
@@ -29,13 +31,22 @@ export const Documents = () => {
 
   useEffect(() => {
     getDocuments();
-  }, [isSortedAsc]);
+  }, [isSortedAsc, managedDocument]);
 
   const changeSorting = () => {
     setIsSortedAsc(!isSortedAsc);
   };
 
-  const renderer = () => {
+  const manageDocument = () => {
+    return (
+      <EditDocument
+        document={managedDocument}
+        goBack={() => setManagedDocument(null)}
+      />
+    );
+  };
+
+  const renderTable = () => {
     if (isLoading) {
       return <Loader height="50px" width="50px" />;
     }
@@ -52,12 +63,14 @@ export const Documents = () => {
             </th>
             <th>Actions</th>
           </tr>
-          {documents.map((doc, index) => {
+          {documents.map((doc) => {
             return (
-              <tr key={index}>
+              <tr key={doc.id}>
                 <td>{doc.title}</td>
                 <td>
-                  <Button>VIEW / EDIT</Button>
+                  <Button onClick={() => setManagedDocument(doc)}>
+                    VIEW / EDIT
+                  </Button>
                   <Button backgroundColor="red">DELETE</Button>
                 </td>
               </tr>
@@ -70,7 +83,7 @@ export const Documents = () => {
     return <>NO DATA</>;
   };
 
-  return renderer();
+  return managedDocument ? manageDocument() : renderTable();
 };
 
 const Table = styled.table`

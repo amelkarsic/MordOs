@@ -9,3 +9,7 @@ export const getDocuments = async (isSortedAsc) => {
     `https://localhost:7233/api/Document?isSortedAsc=${isSortedAsc}`
   );
 };
+
+export const editDocument = async (data) => {
+  return await axios.put(`https://localhost:7233/api/Document`, data);
+};
