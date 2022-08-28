@@ -6,25 +6,6 @@ import { Button } from "../shared/Button";
 export const MainMenu = () => {
   const { openMenuItem } = useRoot();
 
-  //   const ref = useRef(null);
-
-  //   useEffect(() => {
-  //     function handleClickOutside(event) {
-  //       if (ref.current && !ref.current.contains(event.target)) {
-  //         closeModal();
-  //         event.stopPropagation();
-  //       }
-  //     }
-
-  //     // Bind the event listener
-  //     document.addEventListener("mousedown", handleClickOutside);
-
-  //     return () => {
-  //       // Unbind the event listener on clean up
-  //       document.removeEventListener("mousedown", handleClickOutside);
-  //     };
-  //   }, [ref, closeModal]);
-
   return (
     <Modal>
       <Button onClick={() => openMenuItem(MENU_ITEM_ENUM.CAMERA)}>

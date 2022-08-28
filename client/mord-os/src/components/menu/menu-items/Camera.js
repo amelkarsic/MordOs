@@ -46,7 +46,6 @@ export const Camera = () => {
     let ctx = photo.getContext("2d");
 
     ctx.drawImage(video, 0, 0, width, height);
-    //TODO: submit to API and you can show them on gallery
   };
 
   return (

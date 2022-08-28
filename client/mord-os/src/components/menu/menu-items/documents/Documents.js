@@ -57,6 +57,7 @@ export const Documents = () => {
 
   const handleDeleteDocument = async (id) => {
     setIsDeleting(true);
+
     try {
       await deleteDocument(id);
       await getDocuments();
