@@ -33,7 +33,7 @@ namespace MordOs.Controllers
         {
             try
             {
-                var documents = await _documentService.GetDocuments(isSortedAsc, cancellationToken);
+                var documents = await _documentService.GetDocumentsAsync(isSortedAsc, cancellationToken);
 
                 return Ok(documents);
             }
@@ -48,7 +48,7 @@ namespace MordOs.Controllers
         {
             try
             {
-                await _documentService.EditDocument(newDoc, cancellationToken);
+                await _documentService.EditDocumentAsync(newDoc, cancellationToken);
 
                 return Ok();
             }

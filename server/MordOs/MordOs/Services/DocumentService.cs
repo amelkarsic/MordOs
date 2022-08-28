@@ -7,8 +7,9 @@ namespace MordOs.Services
     public interface IDocumentService
     {
         Task CreateFileAsync(DocDto doc, CancellationToken cancellationToken);
-        Task<List<DocDto>> GetDocuments(bool isSortedAsc, CancellationToken cancellationToken);
-        Task EditDocument(DocDto newDoc, CancellationToken cancellationToken);
+        Task<List<DocDto>> GetDocumentsAsync(bool isSortedAsc, CancellationToken cancellationToken);
+        Task EditDocumentAsync(DocDto newDoc, CancellationToken cancellationToken);
+        Task DeleteDocumentAsync(int id, CancellationToken cancellationToken);
     }
     public class DocumentService : IDocumentService
     {
@@ -29,7 +30,7 @@ namespace MordOs.Services
             await _mordDbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<List<DocDto>> GetDocuments(bool isSortedAsc, CancellationToken cancellationToken)
+        public async Task<List<DocDto>> GetDocumentsAsync(bool isSortedAsc, CancellationToken cancellationToken)
         {
             var documents = await _mordDbContext.Documents
                 .Select(x => new DocDto { Id = x.Id, Text = x.Text, Title = x.Title })
@@ -39,7 +40,7 @@ namespace MordOs.Services
             return isSortedAsc ? documents : documents.OrderByDescending(x => x.Title).ToList();
         }
 
-        public async Task EditDocument(DocDto newDoc, CancellationToken cancellationToken)
+        public async Task EditDocumentAsync(DocDto newDoc, CancellationToken cancellationToken)
         {
             var document = await _mordDbContext.Documents.FirstOrDefaultAsync(x => x.Id == newDoc.Id);
 
@@ -51,6 +52,19 @@ namespace MordOs.Services
             document.Text = newDoc.Text;
             document.Title = newDoc.Title;
 
+            await _mordDbContext.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task DeleteDocumentAsync(int id, CancellationToken cancellationToken)
+        {
+            var document = await _mordDbContext.Documents.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (document == null)
+            {
+                throw new ArgumentException("Document not found!");
+            }
+
+            _mordDbContext.Documents.Remove(document);
             await _mordDbContext.SaveChangesAsync(cancellationToken);
         }
     }
