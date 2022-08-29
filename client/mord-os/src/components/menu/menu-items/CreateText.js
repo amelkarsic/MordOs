@@ -43,7 +43,7 @@ export const CreateText = () => {
       </label>
       <TextArea required name="text"></TextArea>
       <Button type="submit" disable={isSubmitting}>
-        SUMBIT
+        SUBMIT
       </Button>
     </Form>
   );

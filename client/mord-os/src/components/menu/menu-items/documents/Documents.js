@@ -20,7 +20,7 @@ export const Documents = () => {
     DIRECTORY_ENUM.Desktop
   );
 
-  //would add pagination, but this is just a POC
+  //would add pagination
   const getDocuments = useCallback(async () => {
     try {
       setIsLoading(true);
@@ -61,6 +61,8 @@ export const Documents = () => {
     try {
       await deleteDocument(id);
       await getDocuments();
+
+      alert("Your file is deleted successfully!");
     } catch (err) {
       console.error(err);
     } finally {
