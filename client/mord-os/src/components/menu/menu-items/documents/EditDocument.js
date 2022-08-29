@@ -22,7 +22,7 @@ export const EditDocument = ({ document, goBack }) => {
         directory: directory.value,
       });
 
-      alert("Your file is edited succefully!");
+      alert("Your file is edited successfully!");
       goBack();
     } catch (err) {
       console.err(err);
@@ -52,7 +52,7 @@ export const EditDocument = ({ document, goBack }) => {
         <TextArea required name="text" defaultValue={document.text}></TextArea>
         <ButtonBar>
           <Button type="submit" disable={isSubmitting}>
-            SUMBIT
+            SUBMIT
           </Button>
           <Button
             type="button"
